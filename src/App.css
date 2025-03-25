@@ -1,38 +1,140 @@
-.App {
+/* Mobile-first Flexbox Layout */
+
+body {
+  margin: 0; /* Reset body margin for full viewport usage */
+}
+
+.container {
+  background-color: gainsboro;
+  padding: 1rem;
+  display: flex; /* Enable Flexbox for the container */
+  flex-direction: column; /* Stack items vertically by default (mobile-first) */
+  align-items: stretch; /* Stretch items to fill container width */
+}
+
+h1 {
   text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#camera-preview {
+  height: auto;
+  border: 1px solid #ccc;
+  max-width: 100%; /* Take full width on mobile */
+  margin-bottom: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.mt-4 { /* Keep Tailwind margin-top utility class if you are using it */
+  margin-top: 1rem;
+  display: flex; /* Make the button and input wrapper a flex container */
+  flex-direction: column; /* Stack input and button on mobile */
+  align-items: stretch; /* Stretch input and button to full width */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#imageUpload {
+  margin-bottom: 0.5rem; /* Space between input and button on mobile */
+}
+
+#uploadButton {
+  /* Keep Tailwind button classes if you are using them */
+  /* ... your button classes ... */
+}
+
+#identificationResults {
+  margin-top: 1.5rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+}
+
+.suggestion-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column; /* Stack suggestion content vertically on mobile */
+  align-items: stretch;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
 }
 
-.App-link {
-  color: #61dafb;
+.suggestion-text {
+  flex-grow: 1;
+  margin-right: 0; /* No right margin on mobile */
+  margin-bottom: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.similar-images-inline {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  flex-wrap: wrap; /* Allow similar images to wrap */
+}
+
+
+/* Desktop Styles using Media Query */
+@media (min-width: 768px) {
+  .container {
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 2rem;
+      flex-direction: row; /* Arrange container items in a row on desktop */
+      flex-wrap: wrap; /* Allow items in the row to wrap if needed */
+      justify-content: space-between; /* Distribute space between main content and results */
   }
-  to {
-    transform: rotate(360deg);
+
+  h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: left; /* Align heading to the left on desktop if in a row layout */
+      flex-basis: 100%; /* Make heading take full width above other desktop content if needed */
+      order: 1; /* Ensure heading is at the top in the flex order if needed */
+  }
+
+  #camera-preview {
+      max-width: 50%; /* Example: Camera preview takes up to 50% width on desktop */
+      margin-right: 2rem; /* Space between preview and upload controls on desktop */
+      margin-bottom: 0; /* Remove bottom margin on desktop */
+      order: 2; /* Set order in flex layout */
+  }
+
+  .mt-4 { /* Input and button wrapper on desktop */
+      margin-top: 0; /* Reset top margin on desktop */
+      flex-direction: row; /* Arrange input and button in a row on desktop */
+      align-items: center; /* Vertically align input and button in a row */
+      order: 3; /* Set order in flex layout */
+      flex-basis: 50%; /* Example: Input/button area can take up to 50% width */
+      justify-content: flex-start; /* Align input/button to the start of their space */
+  }
+
+  #imageUpload {
+      margin-bottom: 0; /* Remove bottom margin of input on desktop row layout */
+      margin-right: 1rem; /* Space between input and button in desktop row */
+  }
+
+  #identificationResults {
+      margin-top: 2rem; /* Top margin for results on desktop */
+      order: 4; /* Set order in flex layout */
+      flex-basis: 100%; /* Results take full width below preview and controls on desktop */
+  }
+
+  .suggestion-item {
+      flex-direction: row; /* Suggestion items in a row on desktop */
+      align-items: center;
+      padding-left: 1rem;
+      padding-right: 1rem;
+  }
+
+  .suggestion-text {
+      margin-right: 1rem;
+      margin-bottom: 0;
+      font-size: 1rem;
+  }
+
+  .similar-images-inline {
+      gap: 1rem;
+      flex-wrap: nowrap; /* No wrapping of images on desktop row layout */
   }
 }
