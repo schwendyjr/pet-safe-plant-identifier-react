@@ -10,6 +10,8 @@ This project is built using React and is designed to be mobile-first and respons
 
 The project is structured as a standard Create React App (CRA) application. Here's a brief overview of the key directories and files:
 
+```
+
 pet-safe-plant-identifier-react/
 ├── node_modules/ (Project dependencies - automatically installed)
 ├── public/ (Public assets, including index.html)
@@ -28,6 +30,7 @@ pet-safe-plant-identifier-react/
 ├── package-lock.json (Dependency version lock file)
 └── README.md 
 
+```
 
 **Key Components and Files:**
 
