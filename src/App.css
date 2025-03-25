@@ -1,4 +1,3 @@
-/* Mobile-first Flexbox Layout */
 
 body {
   margin: 0; /* Reset body margin for full viewport usage */
@@ -21,11 +20,11 @@ h1 {
 #camera-preview {
   height: auto;
   border: 1px solid #ccc;
-  max-width: 100%; /* Take full width on mobile */
+  max-width: 85%; 
   margin-bottom: 1rem;
 }
 
-.mt-4 { /* Keep Tailwind margin-top utility class if you are using it */
+.mt-4 { 
   margin-top: 1rem;
   display: flex; /* Make the button and input wrapper a flex container */
   flex-direction: column; /* Stack input and button on mobile */
@@ -37,8 +36,7 @@ h1 {
 }
 
 #uploadButton {
-  /* Keep Tailwind button classes if you are using them */
-  /* ... your button classes ... */
+ 
 }
 
 #identificationResults {

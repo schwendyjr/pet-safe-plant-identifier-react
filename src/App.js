@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import './App.css'; // Import global styles
+import './App.css';
 import CameraPreview from './CameraPreview';
 import ImageUpload from './ImageUpload';
 import IdentificationResults from './IdentificationResults';
 
-
 function App() {
     const [identificationResult, setIdentificationResult] = useState(null);
+    const [uploadedImageURL, setUploadedImageURL] = useState(null); // New state for uploaded image URL
 
     const handleIdentification = async (base64Image) => {
         const API_KEY = process.env.REACT_APP_API_KEY;
@@ -37,7 +37,7 @@ function App() {
             redirect: 'follow'
         };
 
-        setIdentificationResult({ loading: true }); // Indicate loading state
+        setIdentificationResult({ loading: true });
 
         try {
             const response = await fetch("https://plant.id/api/v3/identification", requestOptions);
@@ -50,11 +50,21 @@ function App() {
         }
     };
 
+    const handleImageUploaded = (dataURL) => { // Handler for image upload
+        setUploadedImageURL(dataURL); // Update state with the uploaded image data URL
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-4 mt-5 justify-self-center text-gray-800">Pet-Safe Plant Identifier</h1>
-            <CameraPreview />
-            <ImageUpload onIdentify={handleIdentification} />
+            <div id="camera-preview" className="w-full max-w-md rounded-md shadow-md border border-gray-300 bg-gray-100" style={{height: 'auto', maxWidth: 'none'}}>
+                {uploadedImageURL ? ( // Conditional rendering
+                    <img src={uploadedImageURL} alt="Uploaded Plant Image" style={{width: '100%', height: 'auto', display: 'block'}} /> // Display uploaded image
+                ) : (
+                    <CameraPreview /> // Display camera preview if no image uploaded
+                )}
+            </div>
+            <ImageUpload onIdentify={handleIdentification} onImageUploaded={handleImageUploaded} /> {/* Pass onImageUploaded prop */}
             <IdentificationResults results={identificationResult} />
         </div>
     );
