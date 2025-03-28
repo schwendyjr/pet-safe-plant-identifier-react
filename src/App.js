@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react'; // Import useRef and useEffect
 import './App.css';
 import CameraPreview from './CameraPreview';
 import ImageUpload from './ImageUpload';
@@ -7,9 +7,24 @@ import IdentificationResults from './IdentificationResults';
 function App() {
     const [identificationResult, setIdentificationResult] = useState(null);
     const [uploadedImageURL, setUploadedImageURL] = useState(null);
+    const [cameraStream, setCameraStream] = useState(null); // State to hold camera stream
+    const cameraPreviewRef = useRef(null); // Ref for CameraPreview component
+
+    useEffect(() => {
+        const startCamera = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                setCameraStream(stream); // Store the stream in state
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+                alert("Error accessing camera. Please make sure you have a camera and allow camera access.");
+            }
+        };
+
+        startCamera(); // Initialize camera when App component mounts
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     const handleIdentification = async (base64Image) => {
-        setUploadedImageURL(null); // Clear uploaded image URL when new identification starts
         const API_KEY = process.env.REACT_APP_API_KEY;
 
         if (!API_KEY) {
@@ -55,11 +70,10 @@ function App() {
         setUploadedImageURL(dataURL);
     };
 
-    const handleCameraCapture = (base64Image) => { // Handler for camera capture
-        setUploadedImageURL(base64Image); // Set captured image as uploaded image
-        handleIdentification(base64Image.split(',')[1]); // Call identification with base64 data
+    const handleCameraCapture = (base64Image) => {
+        setUploadedImageURL(base64Image);
+        handleIdentification(base64Image.split(',')[1]);
     };
-
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -68,7 +82,7 @@ function App() {
                 {uploadedImageURL ? (
                     <img src={uploadedImageURL} alt="Plant Image" style={{ width: '100%', height: 'auto', display: 'block' }} />
                 ) : (
-                    <CameraPreview onCapture={handleCameraCapture} /> // Pass handleCameraCapture as onCapture
+                    <CameraPreview onCapture={handleCameraCapture} cameraStream={cameraStream} /> // Pass cameraStream as prop
                 )}
             </div>
             <ImageUpload onIdentify={handleIdentification} onImageUploaded={handleImageUploaded} />
