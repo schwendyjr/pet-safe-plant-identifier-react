@@ -6,9 +6,10 @@ import IdentificationResults from './IdentificationResults';
 
 function App() {
     const [identificationResult, setIdentificationResult] = useState(null);
-    const [uploadedImageURL, setUploadedImageURL] = useState(null); // New state for uploaded image URL
+    const [uploadedImageURL, setUploadedImageURL] = useState(null);
 
     const handleIdentification = async (base64Image) => {
+        setUploadedImageURL(null); // Clear uploaded image URL when new identification starts
         const API_KEY = process.env.REACT_APP_API_KEY;
 
         if (!API_KEY) {
@@ -50,21 +51,27 @@ function App() {
         }
     };
 
-    const handleImageUploaded = (dataURL) => { // Handler for image upload
-        setUploadedImageURL(dataURL); // Update state with the uploaded image data URL
+    const handleImageUploaded = (dataURL) => {
+        setUploadedImageURL(dataURL);
     };
+
+    const handleCameraCapture = (base64Image) => { // Handler for camera capture
+        setUploadedImageURL(base64Image); // Set captured image as uploaded image
+        handleIdentification(base64Image.split(',')[1]); // Call identification with base64 data
+    };
+
 
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-4 mt-5 justify-self-center text-gray-800">Pet-Safe Plant Identifier</h1>
-            <div id="camera-preview" className="w-full max-w-md rounded-md shadow-md border border-gray-300 bg-gray-100" style={{height: 'auto', maxWidth: 'none'}}>
-                {uploadedImageURL ? ( // Conditional rendering
-                    <img src={uploadedImageURL} alt="Uploaded Plant Image" style={{width: '100%', height: 'auto', display: 'block'}} /> // Display uploaded image
+            <div id="camera-preview" className="w-full max-w-md rounded-md shadow-md border border-gray-300 bg-gray-100" style={{ height: 'auto', maxWidth: 'none' }}>
+                {uploadedImageURL ? (
+                    <img src={uploadedImageURL} alt="Plant Image" style={{ width: '100%', height: 'auto', display: 'block' }} />
                 ) : (
-                    <CameraPreview /> // Display camera preview if no image uploaded
+                    <CameraPreview onCapture={handleCameraCapture} /> // Pass handleCameraCapture as onCapture
                 )}
             </div>
-            <ImageUpload onIdentify={handleIdentification} onImageUploaded={handleImageUploaded} /> {/* Pass onImageUploaded prop */}
+            <ImageUpload onIdentify={handleIdentification} onImageUploaded={handleImageUploaded} />
             <IdentificationResults results={identificationResult} />
         </div>
     );

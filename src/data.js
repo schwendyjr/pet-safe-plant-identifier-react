@@ -1,4 +1,3 @@
-// src/data.js
 export const plantData = [
     {
       commonNames: ["Aloe", "True Aloe", "Barbados Aloe"],
@@ -262,21 +261,25 @@ export const plantData = [
   
   ];
   
-  // Function to find plant by name (case-insensitive)
+  // Function to find plant by name (case-insensitive, now with startsWith for API name)
   export function findPlantByName(name) {
     const lowerName = name.toLowerCase();
-    return plantData.find(plant =>
-      plant.commonNames.some(common => common.toLowerCase() === lowerName) ||
-      plant.scientificName.toLowerCase() === lowerName
-    );
-  }
-  
-  // Function to filter plants by toxicity
-  export function filterPlantsByToxicity(isToxic) {
+    return plantData.find(plant => {
+        const plantScientificNameLower = plant.scientificName.toLowerCase();
+        return (
+            plant.commonNames.some(common => common.toLowerCase() === lowerName) ||
+            lowerName.startsWith(plantScientificNameLower) || // API name starts with data.js name
+            plantScientificNameLower.startsWith(lowerName)  // data.js name starts with API name
+        );
+    });
+}
+
+// Function to filter plants by toxicity (no change)
+export function filterPlantsByToxicity(isToxic) {
     return plantData.filter(plant => plant.isToxic === isToxic);
-  }
-  
-  // Function to filter plants by affected animal
-  export function filterPlantsByAnimal(animal) {
+}
+
+// Function to filter plants by affected animal (no change)
+export function filterPlantsByAnimal(animal) {
     return plantData.filter(plant => plant.affectedAnimals.includes(animal.toLowerCase()));
-  }
+}
