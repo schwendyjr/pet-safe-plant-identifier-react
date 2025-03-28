@@ -1,4 +1,3 @@
-// src/PetSafetyService.js
 import { plantData, findPlantByName } from './data'; // Import plantData and findPlantByName
 
 class PetSafetyService {
